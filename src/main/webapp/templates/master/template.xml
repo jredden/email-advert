@@ -1,0 +1,8 @@
+	<Template title="Image and Title" image="http://www.email_advert.com/_m/NoImage.jpg">
+		<Description>Master</Description>
+		<Html>
+			<![CDATA[
+{0}
+			]]>
+		</Html>
+	</Template>

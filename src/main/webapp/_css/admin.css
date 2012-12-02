@@ -1,0 +1,153 @@
+@CHARSET "UTF-8";
+
+
+a {
+padding-right: 35px;
+position: relative;
+}
+
+img {
+padding-left: 15px;
+position: relative;
+}
+
+h1 {
+position: relative;
+padding-top: 60px;
+}
+
+div {
+position: relative;
+color: green;
+font-size: 20pt;
+}
+
+#homeHome{
+color: green;
+position: absolute;
+padding-top: 5px;
+font-size: 20pt;
+}
+
+#menuTop{
+color: green;
+position: relative;
+    background-image: none;
+    background-repeat:no-repeat;
+    background-position:right top;
+    background-repeat: repeat;
+    padding-top: 60px;
+    font-size: 20pt;
+}
+#menuTop2{
+color: green;
+position: relative;
+    background-image: none;
+    background-repeat:no-repeat;
+    background-position:right top;
+    background-repeat: repeat;
+    padding-top: 10px;
+    font-size: 20pt;
+}
+
+#newCamp{
+	padding-top: 30px;
+	font-size: 10pt;
+}
+
+#submit #who{
+	color: green;
+}
+
+
+#updateACampaignEventsToDates{
+padding-left: 15px;
+position: relative;
+color: green;
+font-size: 20pt;
+}
+
+#updateACampaignEventsToDatesForm{
+padding-left: 15px;
+position: relative;
+color: green;
+font-size: 15pt;
+}
+
+#menuLogin  #loginFailed{
+padding-left: 20px;
+position: relative;
+color: green;
+font-size: 20pt;
+}
+#spanLogin{
+padding-left: 50px;
+position: relative;.ucampChild1 { style : value}
+
+<a clss="ucampParent ucampChild"
+color: green;
+}
+#loginForm{
+padding-left: 20px;
+position: relative;
+color: green;
+}
+#uName{
+padding-left: 20px;
+position: relative;
+color: green;
+}
+#loginPassword{
+padding-top: 5px;
+padding-left: 20px;
+position: relative;
+color: green;
+}
+#uNames{
+padding-left: 20px;
+position: relative;
+color: green;
+}
+#loginPasswords{
+padding-top: 5px;
+padding-left: 20px;
+position: relative;
+color: green;
+}
+
+#rootMenu #deleteMenu{
+padding-left: 20px;
+position: relative;
+color: green;
+font-size: 20pt;
+}
+#rootForm #deleteForm{
+padding-left: 20px;
+position: relative;
+color: green;
+}
+#homeMenuRoot{
+padding-left: 15px;
+position: relative;
+color: green;
+font-size: 20pt;
+}
+
+#menuHomePage{
+padding-top: 10px;
+position: absolute;
+color: green;
+}
+
+
+.button {
+	font-size: 24px;
+    font-weight: bold;
+    color: green;
+    border:1px solid #CCC;
+    background-color: lightgreen;
+    margin:10px 40px 10px 40px;
+}
+.option{
+	color: green;
+}

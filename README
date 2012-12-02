@@ -1,0 +1,2 @@
+sh/infra.sh needs to be ran, likely as sudo, to create the email_advert infrastructure in /home/email_advert.  It must be created above the webapp folder
+where email_advert war files are expanded.

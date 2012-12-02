@@ -1,0 +1,35 @@
+Generated with http://www.websequencediagrams.com/
+
+participant Dispatcher as D
+participant ThreadLocalData as TLD
+participant UserAction as UA
+participant UserPathBuilder as UPB
+participant Connector as C
+
+D -> TLD: getContext()
+activate TLD
+TLD -> D: context
+deactivate TLD
+D -> UA: is*Enabled(request)
+note right of D: * (asterisk) denotes\n'CreateFolder',\n'FileBrowsing' or 'FileUpload'
+activate UA
+UA -> D: boolean value
+deactivate UA
+D --> C: requested connector method
+activate C
+C --> TLD: getRequest()
+activate TLD
+TLD --> C: request
+deactivate TLD
+C --> UPB: getUserFilesAbsolutePath(request)
+activate UPB
+UPB --> C: path
+deactivate UPB
+C --> D: response (if any) or\nraise exception
+deactivate C
+D --> UPB: getUserFilesPath(request)
+activate UPB
+UPB --> D: path
+deactivate UPB
+
+Style 'qsd', Scale 100 %

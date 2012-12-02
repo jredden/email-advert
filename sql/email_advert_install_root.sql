@@ -1,0 +1,1 @@
+INSERT INTO User (`UserName`, `UserPassword`, `UserRole`) VALUES ('root', '2e99513f5b1fb45e8c6478c5686d2f49', 'root');

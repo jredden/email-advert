@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/beans/aop
+                           http://www.springframework.org/schema/beans/aop/spring-aop.xsd
+ 							http://www.springframework.org/schema/aop 
+ 							http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://sherpadb.matrix.cc/dashboard" />
+		<property name="username" value="dashboard" />
+		<property name="password" value="RJXU6tN7k0oSOHle" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="schemaUpdate" value="false" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="current_session_context_class">thread</prop>
+				<prop key="transaction.factory_class">
+					org.hibernate.transaction.JDBCTransactionFactory
+				</prop>
+				<prop key="hibernate.show_sql">false</prop>
+
+			</props>
+		</property>
+	</bean>
+
+	<bean id="viewResolverJSP"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/view/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order">
+			<value>1</value>
+		</property>
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10000000" />
+		<property name="maxInMemorySize" value="5000000" />
+	</bean>
+
+	<bean id="loggingAspect" class="com.zenred.eadvert.aop.LoggingAspect" />
+	<aop:aspectj-autoproxy />
+
+
+	<bean name="primaryAdminController"
+		class="com.zenred.eadvert.admin.controller.PrimaryAdminController" />
+	<bean name="primaryLoginController"
+		class="com.zenred.eadvert.admin.controller.PrimaryLoginController" />
+	<bean name="primaryLogoutController"
+		class="com.zenred.eadvert.admin.controller.PrimaryLogoutController" />
+	<bean name="primaryHomeController"
+		class="com.zenred.eadvert.admin.controller.PrimaryHomeController" />
+	<bean name="primaryLoggingController"
+		class="com.zenred.eadvert.admin.controller.PrimaryLoggingController" />
+	<bean name="primaryEditController"
+		class="com.zenred.eadvert.admin.controller.PrimaryEditController" />
+	<bean name="primaryReportsController" 
+		class="com.zenred.eadvert.admin.controller.PrimaryReportsController">
+		<property name="reportViewMap">
+			<map>
+				<entry key="root">
+					<value>main_full_report</value>
+				</entry>
+				<entry key="admin">
+					<value>main_full_report</value>
+				</entry>
+				<entry key="test">
+					<value>main_full_report</value>
+				</entry>
+				<entry key="provider">
+					<value>main_provider_report</value>
+				</entry>
+				<entry key="subscriber">
+					<value>main_subscriber_report</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+
+	<bean name="storeCampaignController"
+		class="com.zenred.eadvert.admin.controller.json.StoreCampaignController">
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean name="storeOemController"
+		class="com.zenred.eadvert.admin.controller.json.StoreOemController">
+		<property name="campaignService" ref="campaignService" />
+		<property name="emailService" ref="emailService" />
+	</bean>
+	<bean name="fetchOemsController"
+		class="com.zenred.eadvert.admin.controller.json.FetchOemsController">
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean name="fetchCampaignController"
+		class="com.zenred.eadvert.admin.controller.json.FetchCampaignController">
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean name="fetchUsersController"
+		class="com.zenred.eadvert.admin.controller.json.FetchUsersController">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean name="fetchProviderUsersController"
+		class="com.zenred.eadvert.admin.controller.json.FetchProviderUsersController">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean name="updateCampaignController"
+		class="com.zenred.eadvert.admin.controller.json.UpdateCampaignController">
+		<property name="campaignService" ref="campaignService" />
+		<property name="emailService" ref="emailService" />
+		<property name="templateService" ref="templateService" />
+	</bean>
+	<bean name="storeCampaignUpdatesController"
+		class="com.zenred.eadvert.admin.controller.json.StoreCampaignUpdatesController">
+		<property name="campaignService" ref="campaignService" />
+		<property name="emailService" ref="emailService" />
+		<property name="templateService" ref="templateService" />
+	</bean>
+	<bean name="validateUserPasswordController"
+		class="com.zenred.eadvert.admin.controller.json.ValidateUserPasswordController">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean name="addUserController"
+		class="com.zenred.eadvert.admin.controller.json.AddUserController">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean name="deleteUserController"
+		class="com.zenred.eadvert.admin.controller.json.DeleteUserController">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean name="primaryTemplateReaderController"
+		class="com.zenred.eadvert.admin.controller.PrimaryTemplateReaderController">
+		<property name="templateService" ref="templateService" />
+	</bean>
+	<bean name="newMessageController"
+		class="com.zenred.eadvert.admin.controller.json.NewMessageController">
+		<property name="content" value="RETURN_TO_CLIENT" />
+	</bean>
+	<bean name="fetchUnassociatedEmailAddressesController"
+		class="com.zenred.eadvert.admin.controller.json.FetchUnassociatedEmailAddressesController">
+		<property name="emailService" ref="emailService" />
+	</bean>
+	<bean name="associateEmailAddressController"
+		class="com.zenred.eadvert.admin.controller.json.AssociateEmailAddressController">
+		<property name="emailService" ref="emailService" />
+	</bean>
+
+	<bean id="fileUploadController"
+		class="com.zenred.eadvert.admin.controller.json.FileUploadController">
+		<property name="commandClass" value="com.zenred.eadvert.model.domain.MultiPartFileUpload"/>
+		<property name="formView">
+			<value>uploadFile</value>
+		</property>
+		<property name="subscriberService" ref="subscriberService" />
+		<property name="emailService" ref="emailService" />
+	</bean>
+
+	<bean id="excelValidator" class="com.zenred.eadvert.validation.ExcelValidator" />
+	
+	<bean id="primaryFileUploadController" class="com.zenred.eadvert.admin.controller.PrimaryFileUploadController"> 
+	</bean>
+	
+	<bean id="multiPartFileUploadControllerSingle"
+		class="com.zenred.eadvert.admin.controller.json.MultiPartFileUploadController">
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean id="messageReviewOrUpdateController"
+		class="com.zenred.eadvert.admin.controller.json.MessageReviewOrUpdateController">
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean id="oneMessageReviewOrUpdateController"
+		class="com.zenred.eadvert.admin.controller.json.OneMessageReviewOrUpdateController">
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean id="primaryOptionOutController"
+		class="com.zenred.eadvert.admin.controller.PrimaryOptionOutController">
+		<property name="emailService" ref="emailService" />
+	</bean>
+	<bean id="primaryPromoteController"
+		class="com.zenred.eadvert.admin.controller.PrimaryPromoteController">
+	</bean>
+	<bean id="primaryUserPromoteController"
+		class="com.zenred.eadvert.admin.controller.PrimaryUserPromoteController">
+	</bean>
+	<bean id="submitToQAController"
+		class="com.zenred.eadvert.admin.controller.json.SubmitToQAController">
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean id="promoteMessageToQAController"
+		class="com.zenred.eadvert.admin.controller.json.PromoteMessageToQAController">
+		<property name="emailService" ref="emailService" />
+	</bean>
+	<bean id="promoteMessageToProductionController"
+		class="com.zenred.eadvert.admin.controller.json.PromoteMessageToProductionController">
+		<property name="emailService" ref="emailService" />
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean id="productionPromotionController"
+		class="com.zenred.eadvert.admin.controller.json.ProductionPromotionController">
+		<property name="emailService" ref="emailService" />
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean id="primaryMessageDeleteController" class="com.zenred.eadvert.admin.controller.PrimaryMessageDeleteController">
+	</bean>
+	<bean id="deleteMessageController" class="com.zenred.eadvert.admin.controller.json.DeleteMessageController">
+		<property name="campaignService" ref="campaignService" />
+	</bean>
+	<bean id="execDeleteMessageController" class="com.zenred.eadvert.admin.controller.json.ExecDeleteMessageController">
+		<property name="emailService" ref="emailService" />
+	</bean>
+	<bean id="primaryInterestGroupController" class="com.zenred.eadvert.admin.controller.PrimaryInterestGroupController">
+	</bean>
+	<bean id="fetchInterestGroupController" class="com.zenred.eadvert.admin.controller.json.FetchInterestGroupController">
+		<property name="interestService" ref="interestService"/>
+	</bean>
+	<bean id="associateCampaignToInterestGroupController" class="com.zenred.eadvert.admin.controller.json.AssociateCampaignToInterestGroupController">
+		<property name="interestService" ref="interestService"/>
+	</bean>
+	<bean id="associateProviderToInterestGroupController" class="com.zenred.eadvert.admin.controller.json.AssociateProviderToInterestGroupController">
+		<property name="interestService" ref="interestService"/>
+	</bean>
+	<bean id="newAnonymousInterestGroupController" class="com.zenred.eadvert.admin.controller.json.NewAnonymousInterestGroupController">
+		<property name="interestService" ref="interestService"/>
+	</bean>
+	<bean id="updatePasswordController" class="com.zenred.eadvert.admin.controller.json.UpdatePasswordController">
+		<property name="userService" ref="userService" />
+	</bean>
+	<bean id="fetchUsersCampaignsController" class="com.zenred.eadvert.admin.controller.json.FetchUsersCampaignsController">
+		<property name="subscriberService" ref="subscriberService" />
+	</bean>
+	<bean id="addEmailToInterestGroupController" class="com.zenred.eadvert.app.controller.json.AddEmailToInterestGroupController">
+		<property name="interestService" ref="interestService"/>
+	</bean>
+	<bean id="fetchAllInterestGroupInfoController" class="com.zenred.eadvert.admin.controller.json.FetchAllInterestGroupInfoController">
+		<property name="interestService" ref="interestService"/>
+	</bean>
+	<bean id="fetchSentEMailInTimeFrameController" class="com.zenred.eadvert.admin.controller.json.FetchSentEMailInTimeFrameController">
+		<property name="reportService" ref="reportService"/>
+	</bean>
+	<bean id="fetchProviderInterestGroupInfoController" class="com.zenred.eadvert.admin.controller.json.FetchProviderInterestGroupInfoController">
+		<property name="interestService" ref="interestService"/>
+	</bean>
+	<bean id="fetchSentEMailInTimeFrameProviderController" class="com.zenred.eadvert.admin.controller.json.FetchSentEMailInTimeFrameProviderController">
+		<property name="reportService" ref="reportService"/>
+	</bean>
+	<bean id="allEmailAddressIntrestGroupsAndProvidersController" class="com.zenred.eadvert.admin.controller.json.AllEmailAddressIntrestGroupsAndProvidersController">
+		<property name="reportService" ref="reportService"/>
+	</bean>
+	<bean id="emailAddressesAndInterestGroupsForProviderController" class="com.zenred.eadvert.admin.controller.json.EmailAddressesAndInterestGroupsForProviderController">
+		<property name="reportService" ref="reportService"/>
+	</bean>
+
+	<bean name="campaignService" class="com.zenred.eadvert.service.CampaignService">
+		<property name="campaignDao" ref="campaignDao" />
+		<property name="dateEventDao" ref="dateEventDao" />
+		<property name="oemDao" ref="oemDao" />
+		<property name="emailService" ref="emailService" />
+		<property name="templateService" ref="templateService" />
+		<property name="fileIODao" ref="fileIODao" />
+		<property name="messageDao" ref="messageDao" />
+		<property name="userFileReviewPath" value="/home/email_advert/userfiles/review/" />
+	</bean>
+	<bean name="emailService" class="com.zenred.eadvert.service.EmailService">
+		<property name="emailDao" ref="emailDao" />
+		<property name="messageDao" ref="messageDao" />
+		<property name="fileIODao" ref="fileIODao" />
+		<property name="campaignDao" ref="campaignDao" />
+		<property name="runtimeDao" ref="runtimeDao" />
+		<property name="excelDao" ref="excelDao" />
+		<property name="dateEventDao" ref="dateEventDao" />
+		<property name="mailer_master"
+			value="/home/email_advert/webapps/email_advert/templates/master/mailer_master.php" />
+		<property name="userFileReviewPath" value="/home/email_advert/userfiles/review/" />
+		<property name="userFileQAPath" value="/home/email_advert/userfiles/qa/" />
+		<property name="userFileProdPath" value="/home/email_advert/userfiles/prod/" />
+		<property name="mailGenPath"
+			value="/home/email_advert/webapps/email_advert/_sh/gen_email.sh" />
+		<property name="mailSendPath" value="/bin/cat {0} | /usr/sbin/sendmail {1}"></property>
+		<!--  		<property name="campaignService" ref="campaignService" /> -->
+	</bean>
+
+	<bean name="subscriberService" class="com.zenred.eadvert.service.SubscriberService">
+		<property name="uploadDao" ref="uploadDao" />
+		<property name="excelDao" ref="excelDao" />
+		<property name="excelValidator" ref="excelValidator" />
+		<property name="fileIODao" ref="fileIODao" />
+		<property name="emailDao" ref="emailDao" />
+		<property name="dateEventDao" ref="dateEventDao" />
+		<property name="runtimeDao" ref="runtimeDao" />
+		<property name="oemDao" ref="oemDao" />
+		<property name="campaignDao" ref="campaignDao" />
+		<property name="messageDao" ref="messageDao" />
+		<property name="userFileProdPath" value="/home/email_advert/userfiles/prod/" />
+		<property name="sendmailLog" value="/home/email_advert/report_log/sendmail.log"/>
+		<property name="sendMailScript" value="TO=$(/bin/grep ''To:'' {0}|/bin/sed -e ''s=To: =='');/bin/cat {0} | /usr/sbin/sendmail -v -f jredden@matrix-consultants.com $TO" />
+		<property name="secondsSleep" value="30"/>
+		<property name="daysRetry" value="5"/>
+	</bean>
+
+	<bean name="templateService" class="com.zenred.eadvert.service.TemplateService">
+		<property name="templateDao" ref="templateDao" />
+		<property name="fileIODao" ref="fileIODao" />
+		<property name="templateBaseFolder" value="/home/email_advert/webapps/email_advert/"></property>
+		<property name="imagesBasePath" value="fck_template/images/" />
+		<property name="template">
+			<value><![CDATA[<Templates imagesBasePath="{0}">{1}</Templates>]]></value>
+		</property>
+
+	</bean>
+	<bean name="userService" class="com.zenred.eadvert.service.UserService">
+		<property name="userDAO" ref="userDAO" />
+	</bean>
+	<bean name="interestService" class="com.zenred.eadvert.service.InterestService">
+		<property name="interestGroupDao" ref="interestGroupDao" />
+		<property name="campaignDao" ref="campaignDao" />
+		<property name="emailDao" ref="emailDao"/>
+	</bean>
+	<bean name="reportService" class="com.zenred.eadvert.service.ReportService">
+		<property name="messageDao" ref="messageDao" />
+		<property name="fileIODao" ref="fileIODao" />
+		<property name="mailLog" value="/var/log/maillog"/>
+		<property name="sendmailLog" value="/home/email_advert/report_log/sendmail.log"/>
+		<property name="logStartConnectionToken" value="Connecting to"/>
+		<property name="logEndConnectionToken" value="closing connection"/>
+	</bean>
+
+	<bean name="campaignDao" class="com.zenred.eadvert.dao.CampaignDao" />
+	<bean name="dateEventDao" class="com.zenred.eadvert.dao.DateEventDao" />
+	<bean name="oemDao" class="com.zenred.eadvert.dao.OemDao" />
+	<bean name="emailDao" class="com.zenred.eadvert.dao.EmailDao" />
+	<bean name="templateDao" class="com.zenred.eadvert.dao.TemplateDao" />
+	<bean name="userDAO" class="com.zenred.eadvert.dao.UserDAO" />
+
+	<bean name="uploadDao" class="com.zenred.eadvert.dao.UploadFileDao" />
+	<bean name="excelDao" class="com.zenred.eadvert.dao.ExcelReaderDao" />
+
+	<bean name="fileIODao" class="com.zenred.eadvert.dao.FileIODao">
+		<property name="bufferSize" value="1000000" />
+	</bean>
+	<bean name="runtimeDao" class="com.zenred.eadvert.dao.RuntimeDao" />
+	<bean name="messageDao" class="com.zenred.eadvert.dao.MessageDao" />
+	<bean name="interestGroupDao" class="com.zenred.eadvert.dao.InterestGroupDao" />
+
+	<bean name="handlerMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/admin.do">primaryAdminController</prop>
+				<prop key="/login.do">primaryLoginController</prop>
+				<prop key="/storeCampaign.do">storeCampaignController</prop>
+				<prop key="/fetchCampaign.do">fetchCampaignController</prop>
+				<prop key="/storeOem.do">storeOemController</prop>
+				<prop key="/fetchOems.do">fetchOemsController</prop>
+				<prop key="/updateCampaign.do">updateCampaignController</prop>
+				<prop key="/storeCampaignUpdates.do">storeCampaignUpdatesController</prop>
+				<prop key="/userAndPassword.do">validateUserPasswordController</prop>
+				<prop key="/addUser.do">addUserController</prop>
+				<prop key="/home.do">primaryHomeController</prop>
+				<prop key="/logout.do">primaryLogoutController</prop>
+				<prop key="/fetchUsers.do">fetchUsersController</prop>
+				<prop key="/fetchProviderUsers.do">fetchProviderUsersController</prop>
+				<prop key="/deleteUser.do">deleteUserController</prop>
+				<prop key="/logger.do">primaryLoggingController</prop>
+				<prop key="/templateReader.do">primaryTemplateReaderController</prop>
+				<prop key="/newMessage.do">newMessageController</prop>
+				<prop key="/unAssocEmailAddr.do">fetchUnassociatedEmailAddressesController</prop>
+				<prop key="/associateEmailAddresses.do">associateEmailAddressController</prop>
+				<prop key="/upLoad.do">primaryFileUploadController</prop>
+				<prop key="/upLoadEdit.do">multiPartFileUploadControllerSingle</prop>
+				<prop key="/uploadFile.do">fileUploadController</prop>
+				<prop key="/editOrReviewThese.do">messageReviewOrUpdateController</prop>
+				<prop key="/editOrReviewThisOne.do">oneMessageReviewOrUpdateController</prop>
+				<prop key="/optOut.do">primaryOptionOutController</prop>
+				<prop key="/executeQA.do">primaryPromoteController</prop>
+				<prop key="/submitCampaignQA.do">submitToQAController</prop>
+				<prop key="/promoteMessageToQA.do">promoteMessageToQAController</prop>
+				<prop key="/promoteToProduction.do">promoteMessageToProductionController</prop>
+				<prop key="/productionPromotion.do">productionPromotionController</prop>
+				<prop key="/MessageDelete.do">primaryMessageDeleteController</prop>
+				<prop key="/submitCampaignMessagesDelete.do">deleteMessageController</prop>
+				<prop key="/execDelete.do">execDeleteMessageController</prop>
+				<prop key="/interestGroup.do">primaryInterestGroupController</prop>
+				<prop key="/fetchInterestGroup.do">fetchInterestGroupController</prop>
+				<prop key="/associateInterestCampaign.do">associateCampaignToInterestGroupController</prop>
+				<prop key="/associateInterestProvider.do">associateProviderToInterestGroupController</prop>
+				<prop key="/newInterestGroup.do">newAnonymousInterestGroupController</prop>
+				<prop key="/updatePassword.do">updatePasswordController</prop>
+				<prop key="/edit.do">primaryEditController</prop>
+				<prop key="/userCampaign.do">fetchUsersCampaignsController</prop>
+				<prop key="/executeUserQA.do">primaryUserPromoteController</prop>
+				<prop key="/email_interest.do">addEmailToInterestGroupController</prop>
+				<prop key="/reports.do">primaryReportsController</prop>
+				<prop key="/fetchAllInterestGroupInfo.do">fetchAllInterestGroupInfoController</prop>
+				<prop key="/timeframeAllReport.do">fetchSentEMailInTimeFrameController</prop>
+				<prop key="/fetchProviderInterestGroupInfo.do">fetchProviderInterestGroupInfoController</prop>
+				<prop key="/timeframeProviderReport.do">fetchSentEMailInTimeFrameProviderController</prop>
+				<prop key="/allEAIGProviders.do">allEmailAddressIntrestGroupsAndProvidersController</prop>
+				<prop key="/EAIGForProviders.do">emailAddressesAndInterestGroupsForProviderController</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+</beans>

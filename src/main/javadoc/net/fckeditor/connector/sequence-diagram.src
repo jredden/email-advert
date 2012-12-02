@@ -1,0 +1,28 @@
+Generated with http://www.websequencediagrams.com/
+
+participant Request as R
+participant ConnectorServlet as CS
+participant ThreadLocalData as TLD
+participant Dispatcher as D
+participant Connector as C
+
+R -> CS: do*(request, response)
+note right of R: * (asterisk) denotes\n'Get' or 'Post'
+activate CS
+CS -> TLD: beginRequest(request)
+activate TLD
+CS -> D: do*(request)
+activate D
+D -> C: call method
+activate C
+C --> D: response (if any) or\nraise exception
+deactivate C
+D --> CS: response
+deactivate D
+note over TLD: End the request to\nprevent memory leaks
+TLD --> CS: "endRequest()  "
+destroy TLD
+CS --> R: response
+deactivate CS
+
+Style 'qsd', Scale 100 %
